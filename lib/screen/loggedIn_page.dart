@@ -13,11 +13,12 @@ class LoggedIn extends StatelessWidget {
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text(' U Sign in as $user'),
           MaterialButton(
-              child: Text('sign out'),
-              color: Colors.blueAccent,
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-              })
+            color: Colors.blueAccent,
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+            },
+            child: const Text('sign out'),
+          )
         ]),
       ),
     );

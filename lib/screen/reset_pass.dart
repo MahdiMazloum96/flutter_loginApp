@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ResetPass extends StatefulWidget {
@@ -8,6 +9,27 @@ class ResetPass extends StatefulWidget {
 }
 
 class _ResetPassState extends State<ResetPass> {
+  final _emailController = TextEditingController();
+
+  Future resetHandler() async {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: _emailController.text.trim());
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const AlertDialog(
+                content: Text('we send a reset link to your email'));
+          });
+    } on FirebaseAuthException catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(content: Text(e.message.toString()));
+          });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,10 +55,11 @@ class _ResetPassState extends State<ResetPass> {
                 color: Colors.grey[350],
                 border: Border.all(color: Colors.white30),
                 borderRadius: BorderRadius.circular(12)),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
-                decoration: InputDecoration(
+                controller: _emailController,
+                decoration: const InputDecoration(
                     border: InputBorder.none, hintText: 'Email'),
               ),
             ),
@@ -44,7 +67,7 @@ class _ResetPassState extends State<ResetPass> {
         ),
         const SizedBox(height: 10),
         MaterialButton(
-          onPressed: () {},
+          onPressed: resetHandler,
           color: Colors.lightBlue,
           child: const Text('Reset', style: TextStyle(color: Colors.white)),
         )

@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:login_app/register.dart';
-import 'package:login_app/reset_pass.dart';
+import 'package:login_app/screen/register.dart';
+import 'package:login_app/screen/reset_pass.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,7 +16,6 @@ class _LoginPageState extends State<LoginPage> {
   final _passWordController = TextEditingController();
 
   Future signIn() async {
-    print('logedin');
     await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text, password: _passWordController.text);
   }

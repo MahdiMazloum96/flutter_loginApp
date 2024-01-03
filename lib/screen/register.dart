@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -8,6 +9,23 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<RegisterPage> {
+  final _emailController = TextEditingController();
+  final _passWordController = TextEditingController();
+
+  Future signUp() async {
+    print('hi');
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passWordController.text.trim());
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passWordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,10 +118,11 @@ class _MyWidgetState extends State<RegisterPage> {
                     color: Colors.grey[350],
                     border: Border.all(color: Colors.white30),
                     borderRadius: BorderRadius.circular(12)),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: TextField(
-                    decoration: InputDecoration(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
                         border: InputBorder.none, hintText: 'Email'),
                   ),
                 ),
@@ -121,11 +140,12 @@ class _MyWidgetState extends State<RegisterPage> {
                     color: Colors.grey[350],
                     border: Border.all(color: Colors.white30),
                     borderRadius: BorderRadius.circular(12)),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: TextField(
+                    controller: _passWordController,
                     obscureText: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none, hintText: 'password'),
                   ),
                 ),
@@ -134,7 +154,7 @@ class _MyWidgetState extends State<RegisterPage> {
             const SizedBox(
               height: 3,
             ),
-            //***** password*******//
+            //*****confirm password*******//
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Container(
@@ -157,7 +177,7 @@ class _MyWidgetState extends State<RegisterPage> {
             ),
             //****sign up button ****/
             GestureDetector(
-              onTap: () {},
+              onTap: signUp,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Container(
